@@ -1,1611 +1,319 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<button type="button" onclick="openUploadForm()">
+  UPLOAD A PROJECT
+</button>
+<!-- VIZORA PROJECT UPLOAD -->
+<div id="uploadModal" class="upload-modal">
+  <div class="upload-box">
 
-<meta name="description"
-content="VIZORA — Premium video editing, reels and visual storytelling for creators, brands and ideas.">
+    <button class="close-upload" onclick="closeUploadForm()">×</button>
 
-<title>VIZORA — Edit • Create • Elevate</title>
+    <div class="upload-brand">VIZORA</div>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <h2>PROJECT SUBMISSION</h2>
+    <p class="upload-subtitle">
+      Tell us about your project and upload your files.
+    </p>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <form id="projectForm">
+
+      <label>Your Name *</label>
+      <input
+        id="clientName"
+        type="text"
+        placeholder="Enter your name"
+        required
+      >
+
+      <label>Email *</label>
+      <input
+        id="clientEmail"
+        type="email"
+        placeholder="your@email.com"
+        required
+      >
+
+      <label>WhatsApp Number</label>
+      <input
+        id="clientPhone"
+        type="tel"
+        placeholder="+91 XXXXX XXXXX"
+      >
+
+      <label>Project Type</label>
+      <select id="projectType">
+        <option value="Video Editing">Video Editing</option>
+        <option value="Reel Editing">Reel Editing</option>
+        <option value="Color Grading">Color Grading</option>
+        <option value="Sound Design">Sound Design</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>Project Details</label>
+      <textarea
+        id="description"
+        placeholder="Tell us what you need..."
+        rows="5"
+      ></textarea>
+
+      <label>Upload Your File *</label>
+
+      <input
+        id="projectFile"
+        type="file"
+        accept="image/*,video/*,.pdf,.zip,.rar"
+        required
+      >
+
+      <div id="uploadStatus"></div>
+
+      <button class="submit-project" type="submit">
+        SUBMIT PROJECT
+      </button>
+
+    </form>
+  </div>
+</div>
 
 <style>
-
-:root{
-    --bg:#050505;
-    --card:#0d0d0d;
-    --gold:#e7a92f;
-    --gold2:#ffd875;
-    --white:#f7f7f7;
-    --muted:#a7a7a7;
-    --line:rgba(231,169,47,.28);
-}
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    background:
-        radial-gradient(circle at 50% 0%,rgba(231,169,47,.10),transparent 30%),
-        #050505;
-    color:var(--white);
-    font-family:Inter,Arial,sans-serif;
-    line-height:1.6;
-}
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-button,
-input,
-textarea,
-select{
-    font-family:inherit;
-}
-
-.container{
-    width:min(1180px,92%);
-    margin:auto;
-}
-
-/* NAVIGATION */
-
-.nav{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    backdrop-filter:blur(18px);
-    background:rgba(5,5,5,.82);
-    border-bottom:1px solid rgba(255,255,255,.07);
-}
-
-.nav-inner{
-    height:78px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.logo{
-    font-size:25px;
-    font-weight:900;
-    letter-spacing:9px;
-}
-
-.logo span{
-    color:var(--gold);
-}
-
-.nav-links{
-    display:flex;
-    gap:30px;
-    align-items:center;
-}
-
-.nav-links a{
-    color:#cfcfcf;
-    font-size:13px;
-    font-weight:600;
-    transition:.25s;
-}
-
-.nav-links a:hover{
-    color:var(--gold);
-}
-
-.menu{
-    display:none;
-    width:45px;
-    height:45px;
-    border:1px solid var(--line);
-    background:#0c0c0c;
-    color:white;
-    border-radius:12px;
-    font-size:23px;
-}
-
-/* HERO */
-
-.hero{
-    min-height:calc(100vh - 78px);
-    display:flex;
-    align-items:center;
-    padding:70px 0;
-}
-
-.hero-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:55px;
-    align-items:center;
-}
-
-.eyebrow{
-    color:#e8c77d;
-    letter-spacing:7px;
-    font-size:12px;
-    font-weight:600;
-    margin-bottom:24px;
-}
-
-.hero h1{
-    font-size:clamp(55px,8vw,105px);
-    line-height:.88;
-    letter-spacing:-5px;
-    text-transform:uppercase;
-    margin-bottom:35px;
-}
-
-.hero h1 .gold{
-    color:var(--gold);
-}
-
-.hero p{
-    color:#aaa;
-    font-size:18px;
-    max-width:590px;
-    margin-bottom:38px;
-}
-
-.buttons{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    min-height:58px;
-    padding:0 27px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:7px;
-    border:1px solid var(--line);
-    font-weight:800;
-    font-size:13px;
-    letter-spacing:1px;
-    cursor:pointer;
-    transition:.25s;
-}
-
-.btn-gold{
-    background:linear-gradient(135deg,#f8ca58,#d99320);
-    color:#080808;
-    border:none;
-}
-
-.btn-gold:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 35px rgba(231,169,47,.22);
-}
-
-.btn-outline{
-    background:transparent;
-    color:white;
-}
-
-.btn-outline:hover{
-    border-color:var(--gold);
-    color:var(--gold);
-}
-
-.hero-image{
-    position:relative;
-}
-
-.hero-image img{
-    width:100%;
-    display:block;
-    border-radius:18px;
-    border:1px solid var(--line);
-    box-shadow:
-        0 0 0 1px rgba(255,255,255,.03),
-        0 30px 100px rgba(0,0,0,.8);
-}
-
-/* SECTION */
-
-section{
-    padding:100px 0;
-}
-
-.section-head{
-    text-align:center;
-    margin-bottom:55px;
-}
-
-.section-kicker{
-    color:var(--gold);
-    letter-spacing:5px;
-    font-size:12px;
-    font-weight:700;
-    margin-bottom:12px;
-}
-
-.section-title{
-    font-size:clamp(35px,5vw,60px);
-    font-weight:900;
-    letter-spacing:-2px;
-}
-
-/* SERVICES */
-
-.services{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-}
-
-.service{
-    background:
-        linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
-    border:1px solid rgba(231,169,47,.22);
-    border-radius:14px;
-    padding:30px 24px;
-    min-height:230px;
-    transition:.3s;
-}
-
-.service:hover{
-    transform:translateY(-5px);
-    border-color:rgba(231,169,47,.7);
-}
-
-.service-icon{
-    font-size:35px;
-    margin-bottom:18px;
-}
-
-.service h3{
-    font-size:17px;
-    margin-bottom:10px;
-}
-
-.service p{
-    color:#999;
-    font-size:14px;
-}
-
-/* PORTFOLIO */
-
-.portfolio-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:22px;
-}
-
-.project{
-    background:#0b0b0b;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:15px;
-    overflow:hidden;
-    transition:.3s;
-}
-
-.project:hover{
-    transform:translateY(-5px);
-    border-color:var(--line);
-}
-
-.project-img{
-    aspect-ratio:16/10;
-    background:#151515;
-    overflow:hidden;
-}
-
-.project-img img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:.5s;
-}
-
-.project:hover .project-img img{
-    transform:scale(1.04);
-}
-
-.project-content{
-    padding:22px;
-}
-
-.category{
-    color:var(--gold);
-    font-size:10px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    font-weight:800;
-}
-
-.project h3{
-    margin:7px 0;
-    font-size:20px;
+.upload-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0,0,0,.88);
+  overflow-y: auto;
+  padding: 30px 18px;
+}
+
+.upload-modal.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.upload-box {
+  width: 100%;
+  max-width: 620px;
+  margin: 20px auto;
+  padding: 30px 24px;
+  background: #090909;
+  border: 1px solid #b98a32;
+  border-radius: 18px;
+  position: relative;
+  box-shadow: 0 20px 80px rgba(0,0,0,.7);
+}
+
+.close-upload {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.upload-brand {
+  color: #e9ad35;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  margin-bottom: 18px;
+}
+
+.upload-box h2 {
+  color: #fff;
+  font-size: 30px;
+  margin: 0 0 8px;
+}
+
+.upload-subtitle {
+  color: #999;
+  margin-bottom: 28px;
+}
+
+.upload-box label {
+  display: block;
+  color: #ddd;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 18px 0 8px;
+}
+
+.upload-box input,
+.upload-box select,
+.upload-box textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+.upload-box textarea {
+  resize: vertical;
+}
+
+.upload-box input:focus,
+.upload-box select:focus,
+.upload-box textarea:focus {
+  border-color: #e9ad35;
+}
+
+.submit-project {
+  width: 100%;
+  margin-top: 25px;
+  padding: 17px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#ffd05a,#e89c18);
+  color: #090909;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
 }
 
-.project p{
-    color:#999;
-    font-size:13px;
-    margin-bottom:15px;
+#uploadStatus {
+  margin-top: 15px;
+  color: #e9ad35;
+  text-align: center;
+  font-weight: 700;
 }
-
-.project-actions{
-    display:flex;
-    gap:10px;
-}
-
-.small-btn{
-    padding:9px 14px;
-    border-radius:6px;
-    border:1px solid rgba(255,255,255,.13);
-    font-size:11px;
-    font-weight:700;
-    cursor:pointer;
-    background:#111;
-    color:white;
-}
-
-.small-btn:hover{
-    border-color:var(--gold);
-    color:var(--gold);
-}
-
-.empty{
-    grid-column:1/-1;
-    text-align:center;
-    padding:60px;
-    border:1px dashed rgba(255,255,255,.12);
-    border-radius:15px;
-    color:#888;
-}
-
-/* ABOUT */
-
-.about{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:70px;
-    align-items:center;
-}
-
-.about h2{
-    font-size:clamp(35px,5vw,60px);
-    line-height:1;
-    margin-bottom:25px;
-}
-
-.about h2 span{
-    color:var(--gold);
-}
-
-.about p{
-    color:#999;
-    margin-bottom:18px;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-}
-
-.stat{
-    border:1px solid var(--line);
-    padding:25px 15px;
-    text-align:center;
-    border-radius:12px;
-}
-
-.stat strong{
-    display:block;
-    font-size:28px;
-    color:var(--gold);
-}
-
-.stat span{
-    color:#888;
-    font-size:11px;
-}
-
-/* CONTACT */
-
-.contact-box{
-    background:
-        radial-gradient(circle at center,rgba(231,169,47,.12),transparent 55%),
-        #0b0b0b;
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:60px 30px;
-    text-align:center;
-}
-
-.contact-box h2{
-    font-size:clamp(35px,5vw,60px);
-    margin-bottom:15px;
-}
-
-.contact-box p{
-    color:#999;
-    margin-bottom:30px;
-}
-
-.socials{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-}
-
-.social{
-    border:1px solid rgba(255,255,255,.12);
-    padding:12px 18px;
-    border-radius:7px;
-    font-size:12px;
-    font-weight:700;
-}
-
-.social:hover{
-    color:var(--gold);
-    border-color:var(--gold);
-}
-
-/* ADMIN */
-
-.admin-panel{
-    display:none;
-    background:#0b0b0b;
-    border:1px solid var(--line);
-    border-radius:15px;
-    padding:30px;
-    margin-top:30px;
-}
-
-.admin-panel.active{
-    display:block;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.field{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-
-.field.full{
-    grid-column:1/-1;
-}
-
-.field label{
-    font-size:11px;
-    color:#aaa;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.field input,
-.field textarea,
-.field select{
-    width:100%;
-    background:#050505;
-    color:white;
-    border:1px solid rgba(255,255,255,.12);
-    padding:14px;
-    border-radius:7px;
-    outline:none;
-}
-
-.field textarea{
-    min-height:120px;
-    resize:vertical;
-}
-
-.field input:focus,
-.field textarea:focus,
-.field select:focus{
-    border-color:var(--gold);
-}
-
-.admin-status{
-    color:#999;
-    margin-bottom:20px;
-    font-size:13px;
-}
-
-/* LOGIN */
-
-.login-box{
-    display:none;
-    max-width:500px;
-    margin:30px auto 0;
-    background:#0b0b0b;
-    border:1px solid var(--line);
-    border-radius:15px;
-    padding:30px;
-}
-
-.login-box.active{
-    display:block;
-}
-
-/* FOOTER */
-
-footer{
-    border-top:1px solid rgba(255,255,255,.08);
-    padding:40px 0;
-    margin-top:40px;
-}
-
-.footer-inner{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-footer p{
-    color:#666;
-    font-size:12px;
-}
-
-/* WHATSAPP */
-
-.whatsapp{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    z-index:999;
-    background:#20d66b;
-    color:#031b0d;
-    padding:15px 20px;
-    border-radius:50px;
-    font-weight:900;
-    box-shadow:0 12px 35px rgba(0,0,0,.5);
-}
-
-.whatsapp:hover{
-    transform:translateY(-2px);
-}
-
-/* MOBILE */
-
-@media(max-width:900px){
-
-    .nav-links{
-        display:none;
-        position:absolute;
-        top:78px;
-        left:0;
-        right:0;
-        background:#080808;
-        border-bottom:1px solid var(--line);
-        padding:20px;
-        flex-direction:column;
-    }
-
-    .nav-links.open{
-        display:flex;
-    }
-
-    .menu{
-        display:block;
-    }
-
-    .hero{
-        padding:55px 0;
-    }
-
-    .hero-grid,
-    .about{
-        grid-template-columns:1fr;
-    }
-
-    .hero h1{
-        font-size:60px;
-    }
-
-    .services{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .portfolio-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-}
-
-@media(max-width:600px){
-
-    section{
-        padding:70px 0;
-    }
-
-    .hero h1{
-        font-size:50px;
-        letter-spacing:-3px;
-    }
-
-    .hero p{
-        font-size:15px;
-    }
-
-    .services,
-    .portfolio-grid{
-        grid-template-columns:1fr;
-    }
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .field.full{
-        grid-column:auto;
-    }
-
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .whatsapp{
-        right:15px;
-        bottom:15px;
-        padding:13px 17px;
-    }
-
-}
-
 </style>
-</head>
-
-<body>
-
-<!-- NAV -->
-
-<header class="nav">
-
-<div class="container nav-inner">
-
-<a href="#" class="logo">
-VIZO<span>R</span>A
-</a>
-
-<nav class="nav-links" id="navLinks">
-<a href="#home">HOME</a>
-<a href="#services">SERVICES</a>
-<a href="#portfolio">PORTFOLIO</a>
-<a href="#about">ABOUT</a>
-<a href="#contact">CONTACT</a>
-</nav>
-
-<button class="menu" onclick="toggleMenu()">☰</button>
-
-</div>
-
-</header>
-
-
-<!-- HERO -->
-
-<main>
-
-<section class="hero" id="home">
-
-<div class="container hero-grid">
-
-<div>
-
-<div class="eyebrow">
-CREATIVE EDITING STUDIO
-</div>
-
-<h1>
-EDIT.<br>
-<span class="gold">CREATE.</span><br>
-ELEVATE.
-</h1>
-
-<p>
-Premium video editing, reels and visual storytelling
-for creators, brands and ideas that deserve to stand out.
-</p>
-
-<div class="buttons">
-
-<a class="btn btn-gold" href="#contact">
-UPLOAD A PROJECT
-</a>
-
-<a class="btn btn-outline"
-href="https://wa.me/917510656149"
-target="_blank">
-CHAT ON WHATSAPP
-</a>
-
-</div>
-
-</div>
-
-
-<div class="hero-image">
-
-<img src="vizora-new-cover.png"
-alt="VIZORA Creative Editing Studio">
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- SERVICES -->
-
-<section id="services">
-
-<div class="container">
-
-<div class="section-head">
-
-<div class="section-kicker">
-WHAT WE DO
-</div>
-
-<h2 class="section-title">
-SERVICES
-</h2>
-
-</div>
-
-
-<div class="services">
-
-<div class="service">
-
-<div class="service-icon">🎬</div>
-
-<h3>VIDEO EDITING</h3>
-
-<p>
-High quality edits that deliver your message
-with impact and professional storytelling.
-</p>
-
-</div>
-
-
-<div class="service">
-
-<div class="service-icon">▶️</div>
-
-<h3>REEL EDITING</h3>
-
-<p>
-Short form content designed to capture attention
-and keep viewers watching.
-</p>
-
-</div>
-
-
-<div class="service">
-
-<div class="service-icon">◉</div>
-
-<h3>COLOR GRADING</h3>
-
-<p>
-Cinematic color correction and grading
-that brings your visuals to life.
-</p>
-
-</div>
-
-
-<div class="service">
-
-<div class="service-icon">〰️</div>
-
-<h3>SOUND DESIGN</h3>
-
-<p>
-Crisp sound design that enhances every
-moment of your video.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- PORTFOLIO -->
-
-<section id="portfolio">
-
-<div class="container">
-
-<div class="section-head">
-
-<div class="section-kicker">
-SELECTED WORK
-</div>
-
-<h2 class="section-title">
-PORTFOLIO
-</h2>
-
-</div>
-
-<div class="portfolio-grid" id="portfolioGrid">
-
-<div class="empty">
-Loading portfolio...
-</div>
-
-</div>
-
-
-<!-- ADMIN -->
-
-<div class="admin-panel" id="adminPanel">
-
-<h2 style="margin-bottom:10px;">
-VIZORA ADMIN
-</h2>
-
-<div class="admin-status" id="adminStatus">
-Checking login...
-</div>
-
-<div id="adminFormArea" style="display:none;">
-
-<div class="form-grid">
-
-<div class="field">
-
-<label>Project Title</label>
-
-<input
-id="projectTitle"
-placeholder="Example: Cinematic Car Edit">
-
-</div>
-
-
-<div class="field">
-
-<label>Category</label>
-
-<select id="projectCategory">
-
-<option>Video Editing</option>
-<option>Reel Editing</option>
-<option>Color Grading</option>
-<option>Sound Design</option>
-<option>Other</option>
-
-</select>
-
-</div>
-
-
-<div class="field full">
-
-<label>Description</label>
-
-<textarea
-id="projectDescription"
-placeholder="Tell people about this project..."></textarea>
-
-</div>
-
-
-<div class="field">
-
-<label>Project URL</label>
-
-<input
-id="projectUrl"
-type="url"
-placeholder="https://...">
-
-</div>
-
-
-<div class="field">
-
-<label>Thumbnail URL</label>
-
-<input
-id="thumbnailUrl"
-type="url"
-placeholder="https://...">
-
-</div>
-
-</div>
-
-<br>
-
-<button class="btn btn-gold"
-onclick="addProject()">
-ADD PROJECT
-</button>
-
-<button class="btn btn-outline"
-onclick="logout()">
-LOG OUT
-</button>
-
-</div>
-
-</div>
-
-
-<!-- LOGIN -->
-
-<div class="login-box" id="loginBox">
-
-<h2 style="margin-bottom:10px;">
-VIZORA LOGIN
-</h2>
-
-<p style="color:#888;margin-bottom:20px;font-size:13px;">
-Admin access for managing portfolio projects.
-</p>
-
-<div class="field">
-
-<label>Email</label>
-
-<input
-id="loginEmail"
-type="email"
-placeholder="Your email">
-
-</div>
-
-<br>
-
-<button class="btn btn-gold"
-onclick="sendLogin()">
-SEND LOGIN LINK
-</button>
-
-<p id="loginMessage"
-style="color:#999;margin-top:15px;font-size:12px;">
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ABOUT -->
-
-<section id="about">
-
-<div class="container about">
-
-<div>
-
-<div class="section-kicker">
-ABOUT VIZORA
-</div>
-
-<h2>
-TURNING IDEAS<br>
-INTO <span>VISUALS.</span>
-</h2>
-
-<p>
-VIZORA is a creative editing studio focused on
-video editing, reels and visual storytelling.
-</p>
-
-<p>
-Every edit is built to communicate, connect
-and make an impression.
-</p>
-
-</div>
-
-
-<div class="stats">
-
-<div class="stat">
-
-<strong>01</strong>
-<span>CREATIVE VISION</span>
-
-</div>
-
-<div class="stat">
-
-<strong>24/7</strong>
-<span>CREATIVE ENERGY</span>
-
-</div>
-
-<div class="stat">
-
-<strong>∞</strong>
-<span>POSSIBILITIES</span>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- CONTACT -->
-
-<section id="contact">
-
-<div class="container">
-
-<div class="contact-box">
-
-<div class="section-kicker">
-LET'S CREATE
-</div>
-
-<h2>
-HAVE A PROJECT?
-</h2>
-
-<p>
-Tell us about your idea and let's turn it into something
-worth watching.
-</p>
-
-<div class="buttons"
-style="justify-content:center;">
-
-<a class="btn btn-gold"
-href="https://wa.me/917510656149"
-target="_blank">
-CHAT ON WHATSAPP
-</a>
-
-<a class="btn btn-outline"
-href="mailto:vizoraworks@gmail.com">
-SEND EMAIL
-</a>
-
-</div>
-
-<br>
-
-<div class="socials">
-
-<a class="social"
-href="https://instagram.com/vizora.works"
-target="_blank">
-INSTAGRAM
-</a>
-
-<a class="social"
-href="https://youtube.com/@vizoraworks"
-target="_blank">
-YOUTUBE
-</a>
-
-<a class="social"
-href="mailto:vizoraworks@gmail.com">
-EMAIL
-</a>
-
-<button class="social"
-onclick="showAdmin()">
-ADMIN
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-
-<!-- FOOTER -->
-
-<footer>
-
-<div class="container footer-inner">
-
-<p>
-© <span id="year"></span> VIZORA. All rights reserved.
-</p>
-
-<p>
-EDIT • CREATE • ELEVATE
-</p>
-
-</div>
-
-</footer>
-
-
-<a class="whatsapp"
-href="https://wa.me/917510656149"
-target="_blank">
-WhatsApp ↗
-</a>
-
 
 <script>
-
-/* =========================================
-   SUPABASE CONFIGURATION
-========================================= */
-
 const SUPABASE_URL =
-"https://veuazvrtrginvucylnsf.supabase.co";
+  "https://veuazvrtrginvucylnsf.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_PKVhV-YrnZgLBg4BFm2GLA_O-wkDJBl";
+  "sb_publishable_PKVhV-YrnZgLBg4BFm2GLA_O-wkDJBl";
 
-const supabaseClient =
-window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
-
-
-/* =========================================
-   GENERAL
-========================================= */
-
-document.getElementById("year").textContent =
-new Date().getFullYear();
-
-
-function toggleMenu(){
-
-    document
-        .getElementById("navLinks")
-        .classList.toggle("open");
-
+function openUploadForm() {
+  document.getElementById("uploadModal").classList.add("active");
 }
 
-
-/* =========================================
-   PORTFOLIO
-========================================= */
-
-async function loadPortfolio(){
-
-    const grid =
-        document.getElementById("portfolioGrid");
-
-    grid.innerHTML =
-        `<div class="empty">Loading portfolio...</div>`;
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .from("portfolio")
-        .select("*")
-        .eq("is_visible", true)
-        .order("sort_order", {
-            ascending:true
-        })
-        .order("created_at", {
-            ascending:false
-        });
-
-    if(error){
-
-        console.error(error);
-
-        grid.innerHTML =
-            `<div class="empty">
-                Portfolio is temporarily unavailable.
-            </div>`;
-
-        return;
-    }
-
-
-    if(!data || data.length === 0){
-
-        grid.innerHTML =
-            `<div class="empty">
-                New projects are coming soon.
-            </div>`;
-
-        return;
-    }
-
-
-    grid.innerHTML = data.map(project => {
-
-        const image =
-            project.thumbnail_url ||
-            "vizora-new-cover.png";
-
-        return `
-
-        <article class="project">
-
-            <div class="project-img">
-
-                <img
-                    src="${escapeHtml(image)}"
-                    alt="${escapeHtml(project.title)}"
-                    loading="lazy"
-                    onerror="this.src='vizora-new-cover.png'"
-                >
-
-            </div>
-
-            <div class="project-content">
-
-                <div class="category">
-                    ${escapeHtml(project.category || "Other")}
-                </div>
-
-                <h3>
-                    ${escapeHtml(project.title)}
-                </h3>
-
-                <p>
-                    ${escapeHtml(project.description || "")}
-                </p>
-
-                ${
-                    project.url
-                    ?
-                    `
-                    <div class="project-actions">
-
-                        <a
-                            class="small-btn"
-                            href="${escapeHtml(project.url)}"
-                            target="_blank"
-                            rel="noopener">
-                            VIEW PROJECT ↗
-                        </a>
-
-                    </div>
-                    `
-                    :
-                    ""
-                }
-
-            </div>
-
-        </article>
-
-        `;
-
-    }).join("");
-
+function closeUploadForm() {
+  document.getElementById("uploadModal").classList.remove("active");
 }
 
+document
+  .getElementById("projectForm")
+  .addEventListener("submit", async function(e) {
 
-/* =========================================
-   ESCAPE HTML
-========================================= */
+    e.preventDefault();
 
-function escapeHtml(value){
+    const status = document.getElementById("uploadStatus");
+    const file = document.getElementById("projectFile").files[0];
 
-    if(value === null || value === undefined){
-        return "";
+    if (!file) {
+      status.textContent = "Please select a file.";
+      return;
     }
 
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-
-}
-
-
-/* =========================================
-   ADMIN PANEL
-========================================= */
-
-function showAdmin(){
-
-    const panel =
-        document.getElementById("adminPanel");
-
-    panel.classList.add("active");
-
-    panel.scrollIntoView({
-        behavior:"smooth"
-    });
-
-    checkUser();
-
-}
-
-
-async function checkUser(){
-
-    const {
-        data
-    } = await supabaseClient
-        .auth
-        .getUser();
-
-    const user = data.user;
-
-    const status =
-        document.getElementById("adminStatus");
-
-    const form =
-        document.getElementById("adminFormArea");
-
-    const login =
-        document.getElementById("loginBox");
-
-
-    if(user){
-
-        status.innerHTML =
-            "Logged in as <strong>" +
-            escapeHtml(user.email) +
-            "</strong>";
-
-        form.style.display = "block";
-        login.classList.remove("active");
-
-    }else{
-
-        status.textContent =
-            "You are not logged in.";
-
-        form.style.display = "none";
-        login.classList.add("active");
-
-    }
-
-}
-
-
-/* =========================================
-   LOGIN
-========================================= */
-
-async function sendLogin(){
-
-    const email =
-        document.getElementById("loginEmail")
-        .value
-        .trim();
-
-    const message =
-        document.getElementById("loginMessage");
-
-
-    if(!email){
-
-        message.textContent =
-            "Please enter your email.";
-
-        return;
-    }
-
-
-    const redirectUrl =
-        window.location.origin +
-        window.location.pathname;
-
-
-    const {
-        error
-    } = await supabaseClient.auth
-        .signInWithOtp({
-
-            email:email,
-
-            options:{
-                emailRedirectTo:redirectUrl
-            }
-
-        });
-
-
-    if(error){
-
-        console.error(error);
-
-        message.textContent =
-            error.message;
-
-        return;
-    }
-
-
-    message.textContent =
-        "Login link sent. Check your email.";
-
-}
-
-
-/* =========================================
-   ADD PROJECT
-========================================= */
-
-async function addProject(){
-
-    const {
-        data: userData
-    } = await supabaseClient
-        .auth
-        .getUser();
-
-    const user =
-        userData.user;
-
-
-    if(!user){
-
-        alert("Please log in first.");
-
-        return;
-    }
-
-
-    const title =
-        document.getElementById("projectTitle")
-        .value
-        .trim();
-
-    const description =
-        document.getElementById("projectDescription")
-        .value
-        .trim();
-
-    const category =
-        document.getElementById("projectCategory")
-        .value;
-
-    const url =
-        document.getElementById("projectUrl")
-        .value
-        .trim();
-
-    const thumbnail_url =
-        document.getElementById("thumbnailUrl")
-        .value
-        .trim();
-
-
-    if(!title){
-
-        alert("Project title is required.");
-
-        return;
-    }
-
-
-    const {
-        error
-    } = await supabaseClient
-        .from("portfolio")
-        .insert({
-
-            title:title,
-
-            description:description,
-
-            category:category,
-
-            url:url,
-
-            thumbnail_url:thumbnail_url,
-
-            is_visible:true,
-
-            owner_id:user.id
-
-        });
-
-
-    if(error){
-
-        console.error(error);
-
-        alert(
-            "Could not add project:\n" +
-            error.message
-        );
-
-        return;
-    }
-
-
-    alert("Project added successfully!");
-
-
-    document.getElementById("projectTitle").value="";
-    document.getElementById("projectDescription").value="";
-    document.getElementById("projectUrl").value="";
-    document.getElementById("thumbnailUrl").value="";
-
-
-    loadPortfolio();
-
-}
-
-
-/* =========================================
-   LOGOUT
-========================================= */
-
-async function logout(){
-
-    await supabaseClient.auth.signOut();
-
-    checkUser();
-
-}
-
-
-/* =========================================
-   AUTH STATE
-========================================= */
-
-supabaseClient.auth
-.onAuthStateChange(
-    (event, session) => {
-
-        if(
-            event === "SIGNED_IN" ||
-            event === "SIGNED_OUT"
-        ){
-
-            checkUser();
-
+    status.textContent = "Uploading your project...";
+
+    try {
+
+      const safeName = file.name
+        .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      const filePath =
+        Date.now() + "_" + safeName;
+
+      /* Upload file */
+
+      const uploadResponse = await fetch(
+        SUPABASE_URL +
+        "/storage/v1/object/project-uploads/" +
+        encodeURIComponent(filePath),
+        {
+          method: "POST",
+          headers: {
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+            "apikey": SUPABASE_KEY,
+            "Content-Type": file.type ||
+              "application/octet-stream"
+          },
+          body: file
         }
+      );
 
+      if (!uploadResponse.ok) {
+        const errorText =
+          await uploadResponse.text();
+
+        throw new Error(errorText);
+      }
+
+      const fileUrl =
+        SUPABASE_URL +
+        "/storage/v1/object/public/project-uploads/" +
+        encodeURIComponent(filePath);
+
+      /* Save project information */
+
+      const projectData = {
+        client_name:
+          document.getElementById("clientName").value,
+
+        email:
+          document.getElementById("clientEmail").value,
+
+        phone:
+          document.getElementById("clientPhone").value,
+
+        project_type:
+          document.getElementById("projectType").value,
+
+        description:
+          document.getElementById("description").value,
+
+        file_url: fileUrl,
+
+        file_name: file.name
+      };
+
+      const databaseResponse = await fetch(
+        SUPABASE_URL +
+        "/rest/v1/project_submissions",
+        {
+          method: "POST",
+          headers: {
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+            "apikey": SUPABASE_KEY,
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify(projectData)
+        }
+      );
+
+      if (!databaseResponse.ok) {
+        const errorText =
+          await databaseResponse.text();
+
+        throw new Error(errorText);
+      }
+
+      status.textContent =
+        "✓ Project submitted successfully!";
+
+      document.getElementById("projectForm").reset();
+
+    } catch (error) {
+
+      console.error(error);
+
+      status.textContent =
+        "Upload failed. Please try again.";
     }
-);
-
-
-/* =========================================
-   START
-========================================= */
-
-loadPortfolio();
-
+  });
 </script>
-
-</body>
-</html>
