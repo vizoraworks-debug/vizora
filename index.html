@@ -1,76 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="VIZORA — Edit • Create • Elevate. Video editing, reels and visual storytelling.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="VIZORA — Edit • Create • Elevate. Premium video editing and visual storytelling.">
 <title>VIZORA — Edit • Create • Elevate</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap');
-:root{--bg:#060606;--text:#f4f4f4;--muted:#919191;--line:#292929;--gold:#d8c0a0}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial;line-height:1.6}
-body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 50% 0,#28221c,transparent 31%),linear-gradient(135deg,#050505,#101010 50%,#050505)}
-body:after{content:"";position:fixed;inset:22px;border:1px solid rgba(216,192,160,.09);pointer-events:none;z-index:-1}
-a{color:inherit;text-decoration:none}.container{width:min(1140px,92%);margin:auto}
-nav{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(5,5,5,.8);backdrop-filter:blur(18px);border-bottom:1px solid #222}
-.nav{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{font:800 20px Montserrat;letter-spacing:.25em}.brand i{color:var(--gold);font-style:normal}
-.links{display:flex;gap:28px;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#bbb}.links a:hover{color:#fff}
-.menu{display:none;background:#111;color:#fff;border:1px solid #444;border-radius:8px;padding:8px 11px}
-.hero{min-height:100vh;padding:120px 0 70px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:65px}
-.kicker,.eyebrow{color:var(--gold);font-size:10px;letter-spacing:.35em;text-transform:uppercase}.kicker{margin-bottom:18px}
-h1,h2,h3{font-family:Montserrat}h1{font-size:clamp(55px,8.5vw,112px);line-height:.88;letter-spacing:-.055em;margin:0}h1 em{font-style:normal;color:#aaa}
-.hero-copy{max-width:610px;color:#999;font-size:16px;margin:28px 0}.buttons{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border:1px solid #4a4a4a;border-radius:999px;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;cursor:pointer;background:transparent;color:#eee}
-.primary{background:#eee;color:#080808;border-color:#eee}.gold{border-color:rgba(216,192,160,.55)}
-.hero-art{position:relative}.hero-art:before{content:"";position:absolute;inset:-16px;border:1px solid rgba(216,192,160,.18);transform:skewY(-2deg)}.hero-art img{position:relative;display:block;width:100%;filter:saturate(.82);box-shadow:0 35px 100px #000}
-section{padding:100px 0;border-top:1px solid var(--line)}.head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:44px}.head h2{font-size:clamp(36px,5vw,62px);line-height:.95;margin:8px 0}.head p{max-width:420px;color:#777}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{min-height:240px;padding:29px;border:1px solid var(--line);background:linear-gradient(145deg,#171717,#090909);position:relative;overflow:hidden}.card:after{content:"";position:absolute;width:140px;height:140px;border:1px solid rgba(216,192,160,.12);border-radius:50%;right:-65px;top:-65px}.num{font-size:10px;color:#777;letter-spacing:.18em}.card h3{font-size:21px;margin:55px 0 8px}.card p{font-size:13px;color:#888}
-.work{display:grid;grid-template-columns:1.4fr .6fr;gap:15px}.work-item{min-height:280px;padding:28px;border:1px solid var(--line);background:linear-gradient(135deg,#191919,#080808);display:flex;flex-direction:column;justify-content:end}.work-item.big{min-height:430px}.work-item h3{font-size:27px;margin:5px 0}.work-item p{font-size:13px;color:#888}
-.upload{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.panel{padding:32px;border:1px solid var(--line);background:linear-gradient(145deg,#151515,#090909)}.panel h3{font-size:27px;margin:0 0 10px}.panel p{color:#888;font-size:14px}.form-button{margin-top:22px}
-.socials{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.social{padding:25px;border:1px solid var(--line);background:#0d0d0d}.social:hover{border-color:#777;transform:translateY(-2px)}
-.social b{font-size:11px;letter-spacing:.14em}.social span{display:block;color:#777;font-size:11px;margin-top:4px}
-.contacts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.contact{padding:24px;border:1px solid var(--line);background:#0c0c0c}.contact small{display:block;color:#777;text-transform:uppercase;letter-spacing:.14em;font-size:9px}.contact strong{display:block;margin-top:6px;font-size:15px}
-.cta{text-align:center;padding:115px 0;background:radial-gradient(circle at 50% 50%,#201b15,transparent 55%)}.cta h2{font-size:clamp(40px,6vw,70px);line-height:.95;max-width:800px;margin:10px auto 20px}.cta p{color:#777}
-.float{position:fixed;right:18px;bottom:18px;z-index:25;background:#25d366;color:#06140a;padding:12px 18px;border-radius:50px;font-size:11px;font-weight:800;box-shadow:0 12px 35px #000}
-footer{border-top:1px solid var(--line);padding:28px 0;color:#666;font-size:11px}.foot{display:flex;justify-content:space-between}
-@media(max-width:800px){.links{display:none}.menu{display:block}.hero,.upload{grid-template-columns:1fr}.grid,.work,.socials,.contacts{grid-template-columns:1fr}.head{display:block}.head p{margin-top:18px}}
-</style></head>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap');
+:root{--bg:#050505;--soft:#0c0c0c;--line:rgba(255,255,255,.13);--text:#f4f3f1;--muted:#8e8d8a;--gold:#d9b98e}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 5%,rgba(196,160,116,.12),transparent 25%),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:auto,140px 100%;z-index:-2}
+body:after{content:"";position:fixed;inset:28px;border:1px solid rgba(216,192,160,.11);pointer-events:none;z-index:-1}
+a{color:inherit;text-decoration:none}.wrap{width:min(1160px,91%);margin:auto}
+nav{position:fixed;z-index:100;top:0;left:0;right:0;background:rgba(5,5,5,.72);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav{height:74px;display:flex;align-items:center;justify-content:space-between}.logo{font:800 21px Montserrat;letter-spacing:.28em}.logo span{color:var(--gold)}
+.navlinks{display:flex;gap:29px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#aaa}.navlinks a:hover{color:#fff}
+.menu{display:none;background:#101010;border:1px solid #3a3a3a;color:#fff;border-radius:10px;padding:9px 12px;font-size:17px}
+.hero{min-height:100vh;padding:110px 0 55px;display:grid;grid-template-columns:.82fr 1.18fr;gap:35px;align-items:center;position:relative}
+.hero-copy{padding:25px 0 20px;z-index:2}.eyebrow{font-size:10px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+h1,h2,h3{font-family:Montserrat,sans-serif}h1{font-size:clamp(52px,7vw,100px);line-height:.88;letter-spacing:-.06em;margin:0}h1 em{font-style:normal;color:#aaa}
+.lead{font-size:15px;line-height:1.8;color:#929292;max-width:520px;margin:26px 0 29px}
+.actions{display:flex;flex-wrap:wrap;gap:11px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:0 21px;border:1px solid #474747;border-radius:2px;text-transform:uppercase;letter-spacing:.16em;font-size:9px;font-weight:800;transition:.25s}.btn:hover{transform:translateY(-2px);border-color:#aaa}.primary{background:#eee;color:#080808;border-color:#eee}
+.art{position:relative;justify-self:end;width:min(590px,100%);padding:15px}.art:before{content:"";position:absolute;inset:0;border:1px solid rgba(216,192,160,.35);clip-path:polygon(6% 0,94% 0,100% 7%,100% 93%,94% 100%,6% 100%,0 93%,0 7%)}
+.art:after{content:"";position:absolute;left:15%;right:15%;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);box-shadow:0 0 20px var(--gold)}
+.art img{width:100%;display:block;box-shadow:0 35px 90px rgba(0,0,0,.9);filter:saturate(.82) contrast(1.06)}
+.hero-mark{position:absolute;right:-20px;bottom:0;color:#555;font-size:9px;letter-spacing:.5em;writing-mode:vertical-rl}
+section{padding:100px 0;border-top:1px solid var(--line)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:35px;margin-bottom:42px}
+.section-head h2{font-size:clamp(36px,5vw,60px);line-height:.95;margin:7px 0 0;letter-spacing:-.04em}.section-head p{max-width:420px;color:#777;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{min-height:255px;padding:27px;border:1px solid var(--line);background:linear-gradient(145deg,#151515,#090909);position:relative;overflow:hidden}.card:after{content:"";position:absolute;width:130px;height:130px;border:1px solid rgba(216,192,160,.12);border-radius:50%;right:-58px;top:-58px}.number{font-size:10px;letter-spacing:.2em;color:#777}.card h3{font-size:20px;margin:58px 0 9px}.card p{font-size:13px;color:#858585;line-height:1.7}
+.workgrid{display:grid;grid-template-columns:1.25fr .75fr;gap:13px}.workbox{min-height:285px;padding:28px;border:1px solid var(--line);background:linear-gradient(135deg,#181818,#080808);display:flex;flex-direction:column;justify-content:end;position:relative;overflow:hidden}.workbox.large{min-height:445px}.workbox:before{content:"V";position:absolute;right:20px;top:10px;font:800 180px Montserrat;color:rgba(255,255,255,.025)}.workbox h3{font-size:26px;margin:6px 0}.workbox p{font-size:12px;color:#777}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.panel{border:1px solid var(--line);background:linear-gradient(145deg,#151515,#090909);padding:31px}.panel h3{font-size:25px;margin:0 0 10px}.panel p{font-size:13px;color:#858585;line-height:1.75}.upload-btn{margin-top:22px}
+.socialgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.social{border:1px solid var(--line);background:#0b0b0b;padding:25px;transition:.25s}.social:hover{border-color:#777;transform:translateY(-2px)}.social b{font-size:10px;letter-spacing:.2em}.social small{display:block;color:#666;margin-top:5px;font-size:11px}
+.contactgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.contact{border:1px solid var(--line);background:#0b0b0b;padding:23px}.contact small{display:block;color:#666;text-transform:uppercase;letter-spacing:.17em;font-size:9px}.contact strong{display:block;margin-top:7px;font-size:14px}
+.cta{text-align:center;padding:120px 0;background:radial-gradient(circle at 50% 50%,rgba(70,53,37,.45),transparent 54%)}.cta h2{font-size:clamp(40px,6vw,70px);line-height:.94;max-width:850px;margin:9px auto 20px}.cta p{color:#777;margin-bottom:30px}
+.float{position:fixed;z-index:90;right:20px;bottom:20px;background:#25d366;color:#06140a;border-radius:50px;padding:13px 18px;font-size:11px;font-weight:800;box-shadow:0 12px 40px #000}
+footer{border-top:1px solid var(--line);padding:29px 0;color:#666;font-size:10px;letter-spacing:.08em}.foot{display:flex;justify-content:space-between}
+@media(max-width:800px){body:after{inset:14px}.navlinks{display:none}.menu{display:block}.hero{grid-template-columns:1fr;padding-top:100px;gap:45px}.hero-copy{padding-top:25px}.art{justify-self:center;width:min(540px,100%)}.hero-mark{display:none}.cards,.workgrid,.upload-grid,.socialgrid,.contactgrid{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:18px}}
+</style>
+</head>
 <body>
-<nav><div class="container nav"><a class="brand" href="#top">VIZ<i>O</i>RA</a><div class="links" id="navlinks"><a href="#services">Services</a><a href="#work">Works</a><a href="#upload">Upload</a><a href="#connect">Connect</a><a href="#contact">Contact</a></div><button class="menu" onclick="document.getElementById('navlinks').style.display='flex';document.getElementById('navlinks').style.position='absolute';document.getElementById('navlinks').style.top='72px';document.getElementById('navlinks').style.left='0';document.getElementById('navlinks').style.right='0';document.getElementById('navlinks').style.padding='20px';document.getElementById('navlinks').style.background='#080808';document.getElementById('navlinks').style.flexDirection='column'">☰</button></div></nav>
+<nav><div class="wrap nav"><a class="logo" href="#top">VIZ<span>O</span>RA</a><div class="navlinks"><a href="#services">Services</a><a href="#work">Works</a><a href="#upload">Upload</a><a href="#connect">Connect</a><a href="#contact">Contact</a></div><button class="menu" onclick="document.querySelector('.navlinks').style.display='flex';document.querySelector('.navlinks').style.position='absolute';document.querySelector('.navlinks').style.top='74px';document.querySelector('.navlinks').style.left='0';document.querySelector('.navlinks').style.right='0';document.querySelector('.navlinks').style.padding='20px';document.querySelector('.navlinks').style.background='#080808';document.querySelector('.navlinks').style.flexDirection='column'">☰</button></div></nav>
+
 <a class="float" href="https://wa.me/917510656149?text=Hi%20VIZORA%2C%20I%27d%20like%20to%20start%20a%20project." target="_blank">WhatsApp ↗</a>
 
-<section class="hero container" id="top"><div><div class="kicker">Creative Editing Studio</div><h1>EDIT.<br><em>CREATE.</em><br>ELEVATE.</h1><p class="hero-copy">Premium video editing, reels and visual storytelling for creators, brands and ideas that deserve to stand out.</p><div class="buttons"><a class="btn primary" href="#upload">Upload a Project</a><a class="btn gold" href="https://wa.me/917510656149?text=Hi%20VIZORA%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank">Chat on WhatsApp</a></div></div><div class="hero-art"><img src="vizora-cover.webp" alt="VIZORA"></div></section>
+<main id="top">
+<section class="hero wrap">
+<div class="hero-copy">
+<div class="eyebrow">Creative Editing Studio</div>
+<h1>EDIT.<br><em>CREATE.</em><br>ELEVATE.</h1>
+<p class="lead">Premium video editing, reels and visual storytelling for creators, brands and ideas that deserve to stand out.</p>
+<div class="actions"><a class="btn primary" href="#upload">Upload a Project</a><a class="btn" href="https://wa.me/917510656149?text=Hi%20VIZORA%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank">Chat on WhatsApp</a></div>
+</div>
+<div class="art"><img src="vizora-cover.webp" alt="VIZORA premium brand artwork"></div>
+<div class="hero-mark">EDIT • CREATE • ELEVATE</div>
+</section>
 
-<section id="services"><div class="container"><div class="head"><div><div class="eyebrow">Services</div><h2>Built for attention.</h2></div><p>Clean cuts, strong pacing and modern visuals — designed to make every second count.</p></div><div class="grid">
-<article class="card"><span class="num">01 / EDIT</span><h3>Reels & Shorts</h3><p>Instagram Reels, YouTube Shorts and social-first edits with hooks, captions and rhythm.</p></article>
-<article class="card"><span class="num">02 / MOTION</span><h3>Motion & Effects</h3><p>Dynamic typography, transitions, camera movement, sound design and visual effects.</p></article>
-<article class="card"><span class="num">03 / BRAND</span><h3>Creative Identity</h3><p>Professional covers, thumbnails and visual direction for creators and businesses.</p></article>
+<section id="services"><div class="wrap">
+<div class="section-head"><div><div class="eyebrow">01 / Services</div><h2>Built for attention.</h2></div><p>Clean cuts, strong pacing and modern visuals — designed to make every second count.</p></div>
+<div class="cards">
+<article class="card"><span class="number">01 / EDIT</span><h3>Reels & Shorts</h3><p>Instagram Reels, YouTube Shorts and social-first edits with hooks, captions, rhythm and sound design.</p></article>
+<article class="card"><span class="number">02 / MOTION</span><h3>Motion & Effects</h3><p>Dynamic typography, transitions, camera movement and visual effects that add impact without clutter.</p></article>
+<article class="card"><span class="number">03 / BRAND</span><h3>Creative Identity</h3><p>Professional covers, thumbnails and visual direction for creators, brands and businesses.</p></article>
 </div></div></section>
 
-<section id="work"><div class="container"><div class="head"><div><div class="eyebrow">Selected direction</div><h2>The VIZORA look.</h2></div><p>Premium, minimal and cinematic — inspired by the original VIZORA identity artwork.</p></div><div class="work">
-<div class="work-item big"><div class="eyebrow">01 / Cinematic</div><h3>Story-first edits</h3><p>Rhythm, sound design and purposeful transitions.</p></div>
-<div class="work-item"><div class="eyebrow">02 / Social</div><h3>Scroll-stopping reels</h3><p>Hooks, captions and mobile-first pacing.</p></div>
-<div class="work-item"><div class="eyebrow">03 / Creative</div><h3>Visual experiments</h3><p>AI-assisted concepts and fresh formats.</p></div>
+<section id="work"><div class="wrap">
+<div class="section-head"><div><div class="eyebrow">02 / Selected work</div><h2>The VIZORA look.</h2></div><p>Premium, minimal and cinematic — with the content always in focus.</p></div>
+<div class="workgrid">
+<div class="workbox large"><div class="eyebrow">01 / Cinematic</div><h3>Story-first edits</h3><p>Rhythm, sound design and purposeful transitions.</p></div>
+<div class="workbox"><div class="eyebrow">02 / Social</div><h3>Scroll-stopping reels</h3><p>Hooks, captions and mobile-first pacing.</p></div>
+<div class="workbox"><div class="eyebrow">03 / Creative</div><h3>Visual experiments</h3><p>AI-assisted concepts and fresh formats.</p></div>
 </div></div></section>
 
-<section id="upload"><div class="container"><div class="head"><div><div class="eyebrow">Project submission</div><h2>Send your project.</h2></div><p>Your files are collected securely through your VIZORA Google Form and stored in your Google account.</p></div>
-<div class="upload">
-<div class="panel"><h3>Upload Project</h3><p>Send your footage, references and project brief directly through the VIZORA project form.</p><div class="buttons form-button"><a class="btn primary" href="$https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=dialog" target="_blank">UPLOAD PROJECT ↗</a></div><p style="margin-top:18px;font-size:12px">After submission, your uploaded files are stored with the Google account that owns the form. You can manage them from Google Drive.</p></div>
-<div class="panel"><h3>Reel Posting</h3><p>Want VIZORA to prepare your reel for posting? Submit your caption, hashtags, platform and preferred posting date.</p><div class="buttons form-button"><a class="btn primary" href="$https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=dialog" target="_blank">REQUEST REEL ↗</a></div><p style="margin-top:18px;font-size:12px">Use the same VIZORA submission form and describe the posting requirements in the project brief.</p></div>
+<section id="upload"><div class="wrap">
+<div class="section-head"><div><div class="eyebrow">03 / Project desk</div><h2>Send your project.</h2></div><p>Your files are collected through the VIZORA project form and stored in the Google account that owns it.</p></div>
+<div class="upload-grid">
+<div class="panel"><h3>Upload Project</h3><p>Send your footage, references and project brief. You can upload multiple project files through the secure Google Form.</p><div class="actions upload-btn"><a class="btn primary" href="https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=dialog" target="_blank">UPLOAD PROJECT ↗</a></div></div>
+<div class="panel"><h3>Reel Posting</h3><p>Request a reel workflow by describing the title, caption, hashtags, platform and preferred posting date in the project brief.</p><div class="actions upload-btn"><a class="btn primary" href="https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=dialog" target="_blank">REQUEST REEL ↗</a></div></div>
 </div></div></section>
 
-<section id="connect"><div class="container"><div class="head"><div><div class="eyebrow">Connect</div><h2>Find VIZORA.</h2></div><p>Follow the work and watch new edits.</p></div><div class="socials">
-<a class="social" href="https://www.instagram.com/vizora.works/" target="_blank"><b>INSTAGRAM</b><span>@vizora.works</span></a>
-<a class="social" href="https://youtube.com/@vizoraworks" target="_blank"><b>YOUTUBE</b><span>@vizoraworks</span></a>
-<a class="social" href="#work"><b>PORTFOLIO</b><span>View selected work</span></a>
+<section id="connect"><div class="wrap">
+<div class="section-head"><div><div class="eyebrow">04 / Connect</div><h2>Find VIZORA.</h2></div><p>Follow the edits, watch new work and explore the portfolio.</p></div>
+<div class="socialgrid">
+<a class="social" href="https://www.instagram.com/vizora.works/" target="_blank"><b>INSTAGRAM</b><small>@vizora.works</small></a>
+<a class="social" href="https://youtube.com/@vizoraworks" target="_blank"><b>YOUTUBE</b><small>@vizoraworks</small></a>
+<a class="social" href="#work"><b>PORTFOLIO</b><small>View selected work</small></a>
 </div></div></section>
 
-<section id="contact"><div class="container"><div class="head"><div><div class="eyebrow">Contact</div><h2>Let's create.</h2></div><p>Choose the fastest way to reach VIZORA.</p></div><div class="contacts">
+<section id="contact"><div class="wrap">
+<div class="section-head"><div><div class="eyebrow">05 / Contact</div><h2>Let's create.</h2></div><p>Choose the fastest way to reach VIZORA.</p></div>
+<div class="contactgrid">
 <a class="contact" href="mailto:vizoraworks@gmail.com"><small>Email</small><strong>vizoraworks@gmail.com</strong></a>
 <a class="contact" href="tel:+917510656149"><small>Mobile</small><strong>+91 75106 56149</strong></a>
 <a class="contact" href="https://wa.me/917510656149" target="_blank"><small>WhatsApp</small><strong>+91 75106 56149</strong></a>
 </div></div></section>
 
-<section class="cta"><div class="container"><div class="eyebrow">VIZORA</div><h2>Your idea deserves a better frame.</h2><p>EDIT • CREATE • ELEVATE</p><div class="buttons" style="justify-content:center"><a class="btn primary" href="#upload">Start a Project</a><a class="btn" href="mailto:vizoraworks@gmail.com">Email VIZORA</a></div></div></section>
-<footer><div class="container foot"><span>© 2026 VIZORA. All rights reserved.</span><span>EDIT • CREATE • ELEVATE</span></div></footer>
-</body></html>
+<section class="cta"><div class="wrap"><div class="eyebrow">VIZORA</div><h2>Your idea deserves a better frame.</h2><p>EDIT • CREATE • ELEVATE</p><div class="actions" style="justify-content:center"><a class="btn primary" href="#upload">Start a Project</a><a class="btn" href="mailto:vizoraworks@gmail.com">Email VIZORA</a></div></div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 VIZORA</span><span>EDIT • CREATE • ELEVATE</span></div></footer>
+</body>
+</html>
