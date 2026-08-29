@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="VIZORA — Edit • Create • Elevate. Video editing, reels and visual storytelling.">
+<title>VIZORA — Edit • Create • Elevate</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap');
+:root{--bg:#060606;--text:#f4f4f4;--muted:#919191;--line:#292929;--gold:#d8c0a0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial;line-height:1.6}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 50% 0,#28221c,transparent 31%),linear-gradient(135deg,#050505,#101010 50%,#050505)}
+body:after{content:"";position:fixed;inset:22px;border:1px solid rgba(216,192,160,.09);pointer-events:none;z-index:-1}
+a{color:inherit;text-decoration:none}.container{width:min(1140px,92%);margin:auto}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(5,5,5,.8);backdrop-filter:blur(18px);border-bottom:1px solid #222}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{font:800 20px Montserrat;letter-spacing:.25em}.brand i{color:var(--gold);font-style:normal}
+.links{display:flex;gap:28px;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#bbb}.links a:hover{color:#fff}
+.menu{display:none;background:#111;color:#fff;border:1px solid #444;border-radius:8px;padding:8px 11px}
+.hero{min-height:100vh;padding:120px 0 70px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:65px}
+.kicker,.eyebrow{color:var(--gold);font-size:10px;letter-spacing:.35em;text-transform:uppercase}.kicker{margin-bottom:18px}
+h1,h2,h3{font-family:Montserrat}h1{font-size:clamp(55px,8.5vw,112px);line-height:.88;letter-spacing:-.055em;margin:0}h1 em{font-style:normal;color:#aaa}
+.hero-copy{max-width:610px;color:#999;font-size:16px;margin:28px 0}.buttons{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border:1px solid #4a4a4a;border-radius:999px;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;cursor:pointer;background:transparent;color:#eee}
+.primary{background:#eee;color:#080808;border-color:#eee}.gold{border-color:rgba(216,192,160,.55)}
+.hero-art{position:relative}.hero-art:before{content:"";position:absolute;inset:-16px;border:1px solid rgba(216,192,160,.18);transform:skewY(-2deg)}.hero-art img{position:relative;display:block;width:100%;filter:saturate(.82);box-shadow:0 35px 100px #000}
+section{padding:100px 0;border-top:1px solid var(--line)}.head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:44px}.head h2{font-size:clamp(36px,5vw,62px);line-height:.95;margin:8px 0}.head p{max-width:420px;color:#777}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{min-height:240px;padding:29px;border:1px solid var(--line);background:linear-gradient(145deg,#171717,#090909);position:relative;overflow:hidden}.card:after{content:"";position:absolute;width:140px;height:140px;border:1px solid rgba(216,192,160,.12);border-radius:50%;right:-65px;top:-65px}.num{font-size:10px;color:#777;letter-spacing:.18em}.card h3{font-size:21px;margin:55px 0 8px}.card p{font-size:13px;color:#888}
+.work{display:grid;grid-template-columns:1.4fr .6fr;gap:15px}.work-item{min-height:280px;padding:28px;border:1px solid var(--line);background:linear-gradient(135deg,#191919,#080808);display:flex;flex-direction:column;justify-content:end}.work-item.big{min-height:430px}.work-item h3{font-size:27px;margin:5px 0}.work-item p{font-size:13px;color:#888}
+.upload{display:grid;grid-template-columns:1.1fr .9fr;gap:15px}.panel{padding:32px;border:1px solid var(--line);background:linear-gradient(145deg,#151515,#090909)}.panel h3{font-size:27px;margin:0 0 10px}.panel p{color:#888;font-size:14px}.form-button{margin-top:22px}
+.socials{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.social{padding:25px;border:1px solid var(--line);background:#0d0d0d}.social:hover{border-color:#777;transform:translateY(-2px)}
+.social b{font-size:11px;letter-spacing:.14em}.social span{display:block;color:#777;font-size:11px;margin-top:4px}
+.contacts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.contact{padding:24px;border:1px solid var(--line);background:#0c0c0c}.contact small{display:block;color:#777;text-transform:uppercase;letter-spacing:.14em;font-size:9px}.contact strong{display:block;margin-top:6px;font-size:15px}
+.cta{text-align:center;padding:115px 0;background:radial-gradient(circle at 50% 50%,#201b15,transparent 55%)}.cta h2{font-size:clamp(40px,6vw,70px);line-height:.95;max-width:800px;margin:10px auto 20px}.cta p{color:#777}
+.float{position:fixed;right:18px;bottom:18px;z-index:25;background:#25d366;color:#06140a;padding:12px 18px;border-radius:50px;font-size:11px;font-weight:800;box-shadow:0 12px 35px #000}
+footer{border-top:1px solid var(--line);padding:28px 0;color:#666;font-size:11px}.foot{display:flex;justify-content:space-between}
+@media(max-width:800px){.links{display:none}.menu{display:block}.hero,.upload{grid-template-columns:1fr}.grid,.work,.socials,.contacts{grid-template-columns:1fr}.head{display:block}.head p{margin-top:18px}}
+</style></head>
+<body>
+<nav><div class="container nav"><a class="brand" href="#top">VIZ<i>O</i>RA</a><div class="links" id="navlinks"><a href="#services">Services</a><a href="#work">Works</a><a href="#upload">Upload</a><a href="#connect">Connect</a><a href="#contact">Contact</a></div><button class="menu" onclick="document.getElementById('navlinks').style.display='flex';document.getElementById('navlinks').style.position='absolute';document.getElementById('navlinks').style.top='72px';document.getElementById('navlinks').style.left='0';document.getElementById('navlinks').style.right='0';document.getElementById('navlinks').style.padding='20px';document.getElementById('navlinks').style.background='#080808';document.getElementById('navlinks').style.flexDirection='column'">☰</button></div></nav>
+<a class="float" href="https://wa.me/917510656149?text=Hi%20VIZORA%2C%20I%27d%20like%20to%20start%20a%20project." target="_blank">WhatsApp ↗</a>
+
+<section class="hero container" id="top"><div><div class="kicker">Creative Editing Studio</div><h1>EDIT.<br><em>CREATE.</em><br>ELEVATE.</h1><p class="hero-copy">Premium video editing, reels and visual storytelling for creators, brands and ideas that deserve to stand out.</p><div class="buttons"><a class="btn primary" href="#upload">Upload a Project</a><a class="btn gold" href="https://wa.me/917510656149?text=Hi%20VIZORA%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank">Chat on WhatsApp</a></div></div><div class="hero-art"><img src="vizora-cover.webp" alt="VIZORA"></div></section>
+
+<section id="services"><div class="container"><div class="head"><div><div class="eyebrow">Services</div><h2>Built for attention.</h2></div><p>Clean cuts, strong pacing and modern visuals — designed to make every second count.</p></div><div class="grid">
+<article class="card"><span class="num">01 / EDIT</span><h3>Reels & Shorts</h3><p>Instagram Reels, YouTube Shorts and social-first edits with hooks, captions and rhythm.</p></article>
+<article class="card"><span class="num">02 / MOTION</span><h3>Motion & Effects</h3><p>Dynamic typography, transitions, camera movement, sound design and visual effects.</p></article>
+<article class="card"><span class="num">03 / BRAND</span><h3>Creative Identity</h3><p>Professional covers, thumbnails and visual direction for creators and businesses.</p></article>
+</div></div></section>
+
+<section id="work"><div class="container"><div class="head"><div><div class="eyebrow">Selected direction</div><h2>The VIZORA look.</h2></div><p>Premium, minimal and cinematic — inspired by the original VIZORA identity artwork.</p></div><div class="work">
+<div class="work-item big"><div class="eyebrow">01 / Cinematic</div><h3>Story-first edits</h3><p>Rhythm, sound design and purposeful transitions.</p></div>
+<div class="work-item"><div class="eyebrow">02 / Social</div><h3>Scroll-stopping reels</h3><p>Hooks, captions and mobile-first pacing.</p></div>
+<div class="work-item"><div class="eyebrow">03 / Creative</div><h3>Visual experiments</h3><p>AI-assisted concepts and fresh formats.</p></div>
+</div></div></section>
+
+<section id="upload"><div class="container"><div class="head"><div><div class="eyebrow">Project submission</div><h2>Send your project.</h2></div><p>Your files are collected securely through your VIZORA Google Form and stored in your Google account.</p></div>
+<div class="upload">
+<div class="panel"><h3>Upload Project</h3><p>Send your footage, references and project brief directly through the VIZORA project form.</p><div class="buttons form-button"><a class="btn primary" href="$https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=dialog" target="_blank">UPLOAD PROJECT ↗</a></div><p style="margin-top:18px;font-size:12px">After submission, your uploaded files are stored with the Google account that owns the form. You can manage them from Google Drive.</p></div>
+<div class="panel"><h3>Reel Posting</h3><p>Want VIZORA to prepare your reel for posting? Submit your caption, hashtags, platform and preferred posting date.</p><div class="buttons form-button"><a class="btn primary" href="$https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=dialog" target="_blank">REQUEST REEL ↗</a></div><p style="margin-top:18px;font-size:12px">Use the same VIZORA submission form and describe the posting requirements in the project brief.</p></div>
+</div></div></section>
+
+<section id="connect"><div class="container"><div class="head"><div><div class="eyebrow">Connect</div><h2>Find VIZORA.</h2></div><p>Follow the work and watch new edits.</p></div><div class="socials">
+<a class="social" href="https://www.instagram.com/vizora.works/" target="_blank"><b>INSTAGRAM</b><span>@vizora.works</span></a>
+<a class="social" href="https://youtube.com/@vizoraworks" target="_blank"><b>YOUTUBE</b><span>@vizoraworks</span></a>
+<a class="social" href="#work"><b>PORTFOLIO</b><span>View selected work</span></a>
+</div></div></section>
+
+<section id="contact"><div class="container"><div class="head"><div><div class="eyebrow">Contact</div><h2>Let's create.</h2></div><p>Choose the fastest way to reach VIZORA.</p></div><div class="contacts">
+<a class="contact" href="mailto:vizoraworks@gmail.com"><small>Email</small><strong>vizoraworks@gmail.com</strong></a>
+<a class="contact" href="tel:+917510656149"><small>Mobile</small><strong>+91 75106 56149</strong></a>
+<a class="contact" href="https://wa.me/917510656149" target="_blank"><small>WhatsApp</small><strong>+91 75106 56149</strong></a>
+</div></div></section>
+
+<section class="cta"><div class="container"><div class="eyebrow">VIZORA</div><h2>Your idea deserves a better frame.</h2><p>EDIT • CREATE • ELEVATE</p><div class="buttons" style="justify-content:center"><a class="btn primary" href="#upload">Start a Project</a><a class="btn" href="mailto:vizoraworks@gmail.com">Email VIZORA</a></div></div></section>
+<footer><div class="container foot"><span>© 2026 VIZORA. All rights reserved.</span><span>EDIT • CREATE • ELEVATE</span></div></footer>
+</body></html>
