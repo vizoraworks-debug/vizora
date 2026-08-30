@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VIZORA — Premium video editing, reels and visual storytelling for creators, brands and ideas.">
+<meta name="theme-color" content="#050505">
+<title>VIZORA — Edit • Create • Elevate</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --bg:#050505;--card:#0d0d0d;--card2:#111;--gold:#e7a92f;--gold2:#ffd875;
+  --white:#f7f7f7;--muted:#999;--line:rgba(231,169,47,.28);
+  --green:#20d66b;--danger:#ff5b5b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:radial-gradient(circle at 50% 0%,rgba(231,169,47,.1),transparent 30%),var(--bg);
+  color:var(--white);font-family:Inter,Arial,sans-serif;line-height:1.6;
+}
+body.modal-open{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.container{width:min(1180px,92%);margin:auto}
+.nav{position:sticky;top:0;z-index:1000;background:rgba(5,5,5,.84);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-inner{height:78px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:25px;font-weight:900;letter-spacing:9px}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links a{color:#ccc;font-size:13px;font-weight:700;transition:.25s}
+.nav-links a:hover{color:var(--gold)}
+.menu{display:none;width:45px;height:45px;border:1px solid var(--line);background:#0c0c0c;color:white;border-radius:12px;font-size:23px}
+
+.hero{min-height:calc(100vh - 78px);display:flex;align-items:center;padding:70px 0}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
+.eyebrow,.section-kicker{color:#e8c77d;letter-spacing:7px;font-size:12px;font-weight:700}
+.eyebrow{margin-bottom:24px}
+.hero h1{font-size:clamp(55px,8vw,105px);line-height:.88;letter-spacing:-5px;text-transform:uppercase;margin-bottom:35px}
+.gold{color:var(--gold)}
+.hero p{color:#aaa;font-size:18px;max-width:590px;margin-bottom:38px}
+.buttons{display:flex;gap:15px;flex-wrap:wrap}
+.btn{min-height:58px;padding:0 27px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--line);font-weight:900;font-size:13px;letter-spacing:1px;transition:.25s}
+.btn-gold{background:linear-gradient(135deg,#f8ca58,#d99320);color:#080808;border:none}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(231,169,47,.22)}
+.btn-outline{background:transparent;color:white}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.hero-image img{width:100%;display:block;border-radius:18px;border:1px solid var(--line);box-shadow:0 30px 100px rgba(0,0,0,.8)}
+
+section{padding:100px 0}
+.section-head{text-align:center;margin-bottom:55px}
+.section-kicker{color:var(--gold);letter-spacing:5px;margin-bottom:12px}
+.section-title{font-size:clamp(35px,5vw,60px);font-weight:900;letter-spacing:-2px}
+
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.service{background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.01));border:1px solid rgba(231,169,47,.22);border-radius:14px;padding:30px 24px;min-height:230px;transition:.3s}
+.service:hover{transform:translateY(-5px);border-color:rgba(231,169,47,.7)}
+.service-icon{font-size:35px;margin-bottom:18px}.service h3{font-size:17px;margin-bottom:10px}.service p{color:#999;font-size:14px}
+
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.project{background:#0b0b0b;border:1px solid rgba(255,255,255,.08);border-radius:15px;overflow:hidden;transition:.3s}
+.project:hover{transform:translateY(-5px);border-color:var(--line)}
+.project-img{aspect-ratio:16/10;background:#151515;overflow:hidden}
+.project-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.project:hover .project-img img{transform:scale(1.04)}
+.project-content{padding:22px}.category{color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800}
+.project h3{margin:7px 0;font-size:20px}.project p{color:#999;font-size:13px;margin-bottom:15px}
+.project-actions{display:flex;gap:8px;flex-wrap:wrap}
+.small-btn{padding:9px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.13);font-size:11px;font-weight:800;background:#111;color:white}
+.small-btn:hover{border-color:var(--gold);color:var(--gold)}
+.small-btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+.empty{text-align:center;padding:60px;border:1px dashed rgba(255,255,255,.12);border-radius:15px;color:#888;grid-column:1/-1}
+
+.about{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.about h2{font-size:clamp(35px,5vw,60px);line-height:1;margin-bottom:25px}.about h2 span{color:var(--gold)}
+.about p{color:#999;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.stat{border:1px solid var(--line);padding:25px 15px;text-align:center;border-radius:12px}
+.stat strong{display:block;font-size:28px;color:var(--gold)}.stat span{color:#888;font-size:11px}
+
+.contact-box{background:radial-gradient(circle at center,rgba(231,169,47,.12),transparent 55%),#0b0b0b;border:1px solid var(--line);border-radius:20px;padding:60px 30px;text-align:center}
+.contact-box h2{font-size:clamp(35px,5vw,60px);margin-bottom:15px}.contact-box p{color:#999;margin-bottom:30px}
+.socials{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.social{border:1px solid rgba(255,255,255,.12);padding:12px 18px;border-radius:7px;font-size:12px;font-weight:800;background:transparent;color:white}
+.social:hover{color:var(--gold);border-color:var(--gold)}
+
+.admin-panel{display:none;background:#0b0b0b;border:1px solid var(--line);border-radius:15px;padding:30px;margin-top:30px}
+.admin-panel.active{display:block}
+.admin-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.admin-status{color:#999;margin:10px 0 20px;font-size:13px}
+.admin-tools{display:flex;gap:10px;flex-wrap:wrap}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}
+.field label{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;font-weight:800}
+.field input,.field textarea,.field select{width:100%;background:#050505;color:white;border:1px solid rgba(255,255,255,.12);padding:14px;border-radius:7px;outline:none}
+.field textarea{min-height:120px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
+.help{font-size:11px;color:#777}
+.login-box{display:none;max-width:500px;margin:30px auto 0;background:#0b0b0b;border:1px solid var(--line);border-radius:15px;padding:30px}
+.login-box.active{display:block}
+.message{margin-top:12px;color:#aaa;font-size:12px}
+.admin-list{margin-top:28px;display:grid;gap:10px}
+.admin-item{display:flex;justify-content:space-between;align-items:center;gap:15px;border:1px solid rgba(255,255,255,.09);padding:15px;border-radius:10px}
+.admin-item small{color:#888}.badge{font-size:10px;padding:4px 8px;border-radius:20px;border:1px solid var(--line);color:var(--gold)}
+.badge.hidden{color:#aaa;border-color:#555}
+
+.upload-options{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:10px}
+.upload-card{border:1px solid rgba(231,169,47,.25);background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.01));padding:25px;border-radius:15px}
+.upload-card h3{margin-bottom:8px}.upload-card p{color:#999;font-size:13px;margin-bottom:18px}
+.upload-card ul{color:#aaa;font-size:12px;padding-left:18px;margin-bottom:20px}.upload-card li{margin:5px 0}
+.upload-card.highlight{border-color:var(--gold);box-shadow:0 0 40px rgba(231,169,47,.07)}
+
+/* ADMIN PROJECT EDITOR */
+.editor-box{margin-top:25px;padding:22px;border:1px solid rgba(231,169,47,.28);border-radius:14px;background:#080808}.editor-box h3{margin-bottom:8px}.editor-box .editor-note{color:#777;font-size:11px;margin-bottom:18px}.editor-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.active{display:flex}
+.modal-card{width:min(650px,100%);max-height:92vh;overflow:auto;background:#0b0b0b;border:1px solid var(--line);border-radius:18px;padding:28px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}
+.close{width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#111;color:#fff;font-size:20px}
+.file-list{display:grid;gap:8px;margin-top:10px}.file-row{display:flex;justify-content:space-between;gap:10px;padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:7px;font-size:12px;color:#aaa}
+.progress{height:7px;background:#191919;border-radius:99px;overflow:hidden;margin-top:15px}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#f8ca58,#d99320);transition:.25s}
+.hidden{display:none!important}
+
+footer{border-top:1px solid rgba(255,255,255,.08);padding:40px 0;margin-top:40px}
+.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}footer p{color:#666;font-size:12px}
+.whatsapp{position:fixed;right:20px;bottom:20px;z-index:999;background:var(--green);color:#031b0d;padding:15px 20px;border-radius:50px;font-weight:900;box-shadow:0 12px 35px rgba(0,0,0,.5)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:#151515;border:1px solid var(--line);padding:12px 18px;border-radius:10px;opacity:0;pointer-events:none;transition:.3s;z-index:5000;font-size:13px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:78px;left:0;right:0;background:#080808;border-bottom:1px solid var(--line);padding:20px;flex-direction:column}
+  .nav-links.open{display:flex}.menu{display:block}
+  .hero{padding:55px 0}.hero-grid,.about{grid-template-columns:1fr}
+  .hero h1{font-size:60px}.services{grid-template-columns:1fr 1fr}.portfolio-grid{grid-template-columns:1fr 1fr}
+  .upload-options{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  section{padding:70px 0}.hero h1{font-size:50px;letter-spacing:-3px}.hero p{font-size:15px}
+  .services,.portfolio-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+  .stats{grid-template-columns:1fr}.whatsapp{right:15px;bottom:15px;padding:13px 17px}
+  .admin-item{align-items:flex-start;flex-direction:column}.modal{padding:10px}.modal-card{padding:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#home" class="logo">VIZO<span>R</span>A</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">HOME</a><a href="#services">SERVICES</a><a href="#portfolio">PORTFOLIO</a>
+      <a href="#about">ABOUT</a><a href="#contact">CONTACT</a>
+    </nav>
+    <button class="menu" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">CREATIVE EDITING STUDIO</div>
+      <h1>EDIT.<br><span class="gold">CREATE.</span><br>ELEVATE.</h1>
+      <p>Premium video editing, reels and visual storytelling for creators, brands and ideas that deserve to stand out.</p>
+      <div class="buttons">
+        <button class="btn btn-gold" onclick="openUploadModal()">UPLOAD A PROJECT</button>
+        <a class="btn btn-outline" href="https://wa.me/917510656149" target="_blank" rel="noopener">CHAT ON WHATSAPP</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="vizora-new-cover.png" alt="VIZORA Creative Editing Studio" onerror="this.style.display='none'">
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="section-head"><div class="section-kicker">WHAT WE DO</div><h2 class="section-title">SERVICES</h2></div>
+    <div class="services">
+      <div class="service"><div class="service-icon">🎬</div><h3>VIDEO EDITING</h3><p>High quality edits that deliver your message with impact and professional storytelling.</p></div>
+      <div class="service"><div class="service-icon">▶️</div><h3>REEL EDITING</h3><p>Short form content designed to capture attention and keep viewers watching.</p></div>
+      <div class="service"><div class="service-icon">◉</div><h3>COLOR GRADING</h3><p>Cinematic color correction and grading that brings your visuals to life.</p></div>
+      <div class="service"><div class="service-icon">〰️</div><h3>SOUND DESIGN</h3><p>Crisp sound design that enhances every moment of your video.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="container">
+    <div class="section-head"><div class="section-kicker">SELECTED WORK</div><h2 class="section-title">PORTFOLIO</h2></div>
+    <div class="portfolio-grid" id="portfolioGrid"><div class="empty">Loading portfolio...</div></div>
+
+    <div class="admin-panel" id="adminPanel">
+      <div class="admin-header">
+        <h2>VIZORA ADMIN</h2>
+        <div class="admin-tools">
+          <button class="small-btn" onclick="loadPortfolio()">REFRESH</button>
+          <button class="small-btn" onclick="hideAdmin()">CLOSE</button>
+        </div>
+      </div>
+      <div class="admin-status" id="adminStatus">Checking admin access...</div>
+
+      <div id="adminFormArea" class="hidden">
+        <div class="form-grid">
+          <div class="field"><label>Project Title</label><input id="projectTitle" placeholder="Example: Cinematic Car Edit"></div>
+          <div class="field"><label>Category</label>
+            <select id="projectCategory"><option>Video Editing</option><option>Reel Editing</option><option>Color Grading</option><option>Sound Design</option><option>Other</option></select>
+          </div>
+          <div class="field full"><label>Description</label><textarea id="projectDescription" placeholder="Tell people about this project..."></textarea></div>
+          <div class="field"><label>Project URL</label><input id="projectUrl" type="url" placeholder="https://..."></div>
+          <div class="field"><label>Thumbnail URL</label><input id="thumbnailUrl" type="url" placeholder="https://..."></div>
+          <div class="field full"><label>Or upload a thumbnail</label><input id="adminThumbnailFile" type="file" accept="image/*"><span class="help">Optional. Uploaded to the project-uploads bucket.</span></div>
+        </div>
+        <br>
+        <button class="btn btn-gold" onclick="addProject()">ADD PROJECT</button>
+        <button class="btn btn-outline" onclick="logout()">LOG OUT</button>
+        <div id="adminMessage" class="message"></div>
+        <div class="admin-list" id="adminList"></div><div class="editor-box hidden" id="projectEditor"><h3>✏️ EDIT PROJECT</h3><div class="editor-note">Edit any detail of an existing portfolio project. You can also replace its project link and thumbnail.</div><input type="hidden" id="editProjectId"><div class="form-grid"><div class="field"><label>Project Title</label><input id="editProjectTitle" placeholder="Project title"></div><div class="field"><label>Category</label><select id="editProjectCategory"><option>Video Editing</option><option>Reel Editing</option><option>Color Grading</option><option>Sound Design</option><option>Other</option></select></div><div class="field full"><label>Description</label><textarea id="editProjectDescription" placeholder="Project description"></textarea></div><div class="field"><label>Project Link</label><input id="editProjectUrl" type="url" placeholder="https://..."><span class="help">Change or replace the existing project link.</span></div><div class="field"><label>New Thumbnail URL</label><input id="editThumbnailUrl" type="url" placeholder="https://..."></div><div class="field full"><label>Re-upload Thumbnail</label><input id="editThumbnailFile" type="file" accept="image/*"><span class="help">Choose a new image to replace the current thumbnail.</span></div><div class="field"><label>Visibility</label><select id="editVisibility"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="field"><label>Sort Order</label><input id="editSortOrder" type="number" step="1" placeholder="0"></div></div><div class="editor-actions"><button class="btn btn-gold" onclick="saveProjectChanges()">SAVE CHANGES</button><button class="btn btn-outline" onclick="cancelProjectEdit()">CANCEL</button></div><p id="editMessage" class="message"></p></div>
+      </div>
+
+      <div class="login-box active" id="loginBox">
+        <h2>🔐 VIZORA ADMIN LOGIN</h2>
+        <p style="color:#888;margin:8px 0 20px;font-size:13px">
+          Admin access is restricted to the VIZORA owner.
+        </p>
+        <div class="field">
+          <label>Admin Email</label>
+          <input id="loginEmail" type="email" autocomplete="username" placeholder="Admin email">
+        </div>
+        <br>
+        <div class="field">
+          <label>Password</label>
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password">
+        </div>
+        <br>
+        <button class="btn btn-gold" onclick="adminLogin()">LOGIN</button>
+        <p id="loginMessage" class="message"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container about">
+    <div>
+      <div class="section-kicker">ABOUT VIZORA</div>
+      <h2>TURNING IDEAS<br>INTO <span>VISUALS.</span></h2>
+      <p>VIZORA is a creative editing studio focused on video editing, reels and visual storytelling.</p>
+      <p>Every edit is built to communicate, connect and make an impression.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>01</strong><span>CREATIVE VISION</span></div>
+      <div class="stat"><strong>24/7</strong><span>CREATIVE ENERGY</span></div>
+      <div class="stat"><strong>∞</strong><span>POSSIBILITIES</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="contact-box">
+      <div class="section-kicker">LET'S CREATE</div>
+      <h2>HAVE A PROJECT?</h2>
+      <p>Tell us about your idea and let's turn it into something worth watching.</p>
+      <div class="buttons" style="justify-content:center">
+        <button class="btn btn-gold" onclick="openUploadModal()">UPLOAD A PROJECT</button>
+        <a class="btn btn-outline" href="https://wa.me/917510656149" target="_blank" rel="noopener">CHAT ON WHATSAPP</a>
+        <a class="btn btn-outline" href="mailto:vizoraworks@gmail.com">SEND EMAIL</a>
+      </div>
+      <br>
+      <div class="socials">
+        <a class="social" href="https://instagram.com/vizora.works" target="_blank" rel="noopener">INSTAGRAM</a>
+        <a class="social" href="https://youtube.com/@vizoraworks" target="_blank" rel="noopener">YOUTUBE</a>
+        <a class="social" href="mailto:vizoraworks@gmail.com">EMAIL</a>
+        <button class="social" onclick="showAdmin()">ADMIN</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="container footer-inner"><p>© <span id="year"></span> VIZORA. All rights reserved.</p><p>EDIT • CREATE • ELEVATE</p></div></footer>
+<a class="whatsapp" href="https://wa.me/917510656149" target="_blank" rel="noopener">WhatsApp ↗</a>
+
+<!-- UPLOAD MODAL -->
+<div class="modal" id="uploadModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><div><div class="section-kicker">PROJECT DELIVERY</div><h2>UPLOAD A PROJECT</h2></div><button class="close" onclick="closeUploadModal()">×</button></div>
+
+    <div class="upload-options">
+      <div class="upload-card">
+        <h3>⚡ STANDARD UPLOAD</h3>
+        <p>For smaller projects that can be sent directly through VIZORA.</p>
+        <ul><li>Maximum <strong>50 MB per file</strong></li><li>Up to <strong>5 files</strong></li><li>Video, image, PDF or ZIP</li><li>Uploaded to VIZORA storage</li></ul>
+        <button class="btn btn-gold" onclick="showStandardUpload()">CHOOSE STANDARD</button>
+      </div>
+
+      <div class="upload-card highlight">
+        <h3>☁️ LARGE PROJECT</h3>
+        <p>For large videos, source folders and files above 50 MB.</p>
+        <ul><li>Up to <strong>10 GB</strong> total through the large-file workflow</li><li>Use the Google Form for large files</li><li>Best for original footage and ZIP files</li><li>Google Form handles the large-file submission</li></ul>
+        <a class="btn btn-outline" id="largeUploadLink" href="#" target="_blank" rel="noopener">UPLOAD UP TO 10 GB ↗</a>
+      </div>
+    </div>
+
+    <div id="standardUploadArea" class="hidden" style="margin-top:25px">
+      <hr style="border:0;border-top:1px solid rgba(255,255,255,.08);margin-bottom:22px">
+      <div class="form-grid">
+        <div class="field"><label>Name</label><input id="uploadName" placeholder="Your name"></div>
+        <div class="field"><label>WhatsApp Number</label><input id="uploadWhatsapp" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="field"><label>Project Type *</label>
+          <select id="uploadType"><option value="">Select project type</option><option>Video Editing</option><option>Reel Editing</option><option>Color Grading</option><option>Sound Design</option><option>Other</option></select>
+        </div>
+        <div class="field"><label>Deadline</label><input id="uploadDeadline" type="date"></div>
+        <div class="field full"><label>Project Details</label><textarea id="uploadDetails" placeholder="Tell us about your project, style, deadline, references, etc."></textarea></div>
+        <div class="field full"><label>Upload Files * (maximum 5)</label>
+          <input id="projectFiles" type="file" multiple accept="video/*,image/*,application/pdf,.zip">
+          <span class="help">Maximum 50 MB per file. Maximum 5 files. For anything larger, use the Large Project option.</span>
+          <div class="file-list" id="fileList"></div>
+        </div>
+      </div>
+      <div class="progress hidden" id="uploadProgress"><div class="progress-bar" id="progressBar"></div></div>
+      <p id="uploadMessage" class="message"></p>
+      <br>
+      <button class="btn btn-gold" id="submitUploadBtn" onclick="submitStandardUpload()">SUBMIT PROJECT</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================
+   VIZORA CONFIG
+========================= */
+const SUPABASE_URL = "https://veuazvrtrginvucylnsf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_PKVhV-YrnZgLBg4BFm2GLA_O-wkDJBl";
+const STORAGE_BUCKET = "project-uploads";
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSckS-vD4_tKwZ16H2ZD_HJunKsYuliLuX4oCs3NybOtLSbk8w/viewform?usp=header";
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
+const MAX_FILES = 5;
+
+// ONLY this Supabase Auth account can use the VIZORA admin panel.
+// Create this exact email in Supabase Authentication.
+// Never put the admin password in this HTML file.
+const ADMIN_EMAIL = "vizoraworks@gmail.com";
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("largeUploadLink").href = GOOGLE_FORM_URL;
+
+function toggleMenu(){ document.getElementById("navLinks").classList.toggle("open"); }
+function toast(msg){
+  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),3000);
+}
+function escapeHtml(value){
+  if(value===null||value===undefined)return "";
+  return String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function safeUrl(value){
+  try{
+    const u=new URL(value,window.location.href);
+    if(["http:","https:","mailto:"].includes(u.protocol)) return u.href;
+  }catch(e){}
+  return "#";
+}
+
+/* =========================
+   PORTFOLIO
+========================= */
+async function loadPortfolio(){
+  const grid=document.getElementById("portfolioGrid");
+  grid.innerHTML='<div class="empty">Loading portfolio...</div>';
+
+  const {data,error}=await supabaseClient.from("portfolio")
+    .select("*").eq("is_visible",true)
+    .order("sort_order",{ascending:true})
+    .order("created_at",{ascending:false});
+
+  if(error){
+    console.error(error);
+    grid.innerHTML='<div class="empty">Portfolio is temporarily unavailable.</div>';
+    return;
+  }
+  if(!data || !data.length){
+    grid.innerHTML='<div class="empty">New projects are coming soon.</div>';
+    return;
+  }
+
+  grid.innerHTML=data.map(project=>{
+    const image=project.thumbnail_url || "vizora-new-cover.png";
+    const projectUrl=project.url ? safeUrl(project.url) : "";
+    return `<article class="project">
+      <div class="project-img"><img src="${escapeHtml(image)}" alt="${escapeHtml(project.title)}" loading="lazy" onerror="this.src='vizora-new-cover.png'"></div>
+      <div class="project-content">
+        <div class="category">${escapeHtml(project.category || "Other")}</div>
+        <h3>${escapeHtml(project.title)}</h3>
+        <p>${escapeHtml(project.description || "")}</p>
+        ${projectUrl ? `<div class="project-actions"><a class="small-btn" href="${projectUrl}" target="_blank" rel="noopener">VIEW PROJECT ↗</a></div>` : ""}
+      </div>
+    </article>`;
+  }).join("");
+}
+
+/* =========================
+   UPLOAD OPTIONS
+========================= */
+function openUploadModal(){
+  document.getElementById("uploadModal").classList.add("active");
+  document.body.classList.add("modal-open");
+  document.getElementById("standardUploadArea").classList.add("hidden");
+  document.getElementById("uploadModal").setAttribute("aria-hidden","false");
+}
+function closeUploadModal(){
+  document.getElementById("uploadModal").classList.remove("active");
+  document.body.classList.remove("modal-open");
+  document.getElementById("uploadModal").setAttribute("aria-hidden","true");
+}
+function showStandardUpload(){
+  document.getElementById("standardUploadArea").classList.remove("hidden");
+  document.getElementById("standardUploadArea").scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.getElementById("uploadModal").addEventListener("click",e=>{
+  if(e.target.id==="uploadModal") closeUploadModal();
+});
+
+/* =========================
+   STANDARD FILE CHECK
+========================= */
+document.getElementById("projectFiles").addEventListener("change",function(){
+  const files=Array.from(this.files||[]);
+  const list=document.getElementById("fileList");
+  list.innerHTML="";
+  if(files.length>MAX_FILES){
+    this.value="";
+    list.innerHTML='<div class="file-row">Maximum 5 files allowed.</div>';
+    return;
+  }
+  let invalid=false;
+  files.forEach(file=>{
+    const row=document.createElement("div");
+    row.className="file-row";
+    const mb=(file.size/1024/1024).toFixed(2);
+    row.innerHTML=`<span>${escapeHtml(file.name)}</span><span>${mb} MB</span>`;
+    list.appendChild(row);
+    if(file.size>MAX_FILE_SIZE) invalid=true;
+  });
+  if(invalid){
+    const row=document.createElement("div");
+    row.className="file-row";
+    row.style.color="#ff8b8b";
+    row.textContent="One or more files are above 50 MB. Use the Large Project option.";
+    list.appendChild(row);
+  }
+});
+
+async function submitStandardUpload(){
+  const files=Array.from(document.getElementById("projectFiles").files||[]);
+  const type=document.getElementById("uploadType").value;
+  const msg=document.getElementById("uploadMessage");
+  const btn=document.getElementById("submitUploadBtn");
+  if(!type){msg.textContent="Please select a project type.";return}
+  if(!files.length){msg.textContent="Please choose at least one file.";return}
+  if(files.length>MAX_FILES){msg.textContent="Maximum 5 files allowed.";return}
+  const tooBig=files.some(f=>f.size>MAX_FILE_SIZE);
+  if(tooBig){msg.textContent="A file is larger than 50 MB. Please use the Large Project option.";return}
+
+  btn.disabled=true; btn.textContent="UPLOADING...";
+  msg.textContent="Uploading your files...";
+  const progress=document.getElementById("uploadProgress");
+  const bar=document.getElementById("progressBar");
+  progress.classList.remove("hidden"); bar.style.width="5%";
+
+  const safeBase=(document.getElementById("uploadName").value.trim()||"client")
+    .replace(/[^a-zA-Z0-9_-]/g,"-").slice(0,40);
+  const uploaded=[];
+
+  try{
+    for(let i=0;i<files.length;i++){
+      const file=files[i];
+      const ext=file.name.includes(".")?file.name.split(".").pop():"bin";
+      const path=`submissions/${Date.now()}-${safeBase}-${crypto.randomUUID()}.${ext}`;
+      const {error}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{upsert:false,contentType:file.type||"application/octet-stream"});
+      if(error) throw error;
+      const {data:publicData}=supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+      uploaded.push({name:file.name,url:publicData.publicUrl,path});
+      bar.style.width=`${Math.round(((i+1)/files.length)*85)}%`;
+    }
+
+    /*
+      The storage bucket is public in the current VIZORA setup, so the
+      submitted file URLs can be stored in the portfolio table description.
+      This keeps this HTML compatible with the existing portfolio schema.
+      For private client submissions, use a separate submissions table/bucket.
+    */
+    const details=document.getElementById("uploadDetails").value.trim();
+    const name=document.getElementById("uploadName").value.trim();
+    const whatsapp=document.getElementById("uploadWhatsapp").value.trim();
+    const deadline=document.getElementById("uploadDeadline").value;
+    const fileLinks=uploaded.map(x=>x.url).join("\n");
+
+    const title=`Project submission — ${name || "Client"}`;
+    const description=[
+      details,
+      name?`Client: ${name}`:"",
+      whatsapp?`WhatsApp: ${whatsapp}`:"",
+      deadline?`Deadline: ${deadline}`:"",
+      `Files:\n${fileLinks}`
+    ].filter(Boolean).join("\n\n");
+
+    /*
+      Anonymous clients can upload files, but creating a portfolio row may
+      require your existing RLS insert policy. If RLS rejects this step,
+      the files have still uploaded and their URLs are shown to the client.
+    */
+    const {error:dbError}=await supabaseClient.from("portfolio").insert({
+      title, description, category:type, url:uploaded[0]?.url || "",
+      thumbnail_url:"", is_visible:false, owner_id:null
+    });
+
+    bar.style.width="100%";
+    if(dbError){
+      console.warn("Files uploaded but portfolio row was not created:",dbError);
+      msg.textContent="Files uploaded successfully. Your submission is ready, but the database submission record needs the matching RLS policy.";
+      toast("Files uploaded successfully");
+    }else{
+      msg.textContent="Project submitted successfully. Thank you!";
+      toast("Project submitted successfully");
+    }
+
+    btn.textContent="SUBMITTED";
+    document.getElementById("projectFiles").value="";
+    document.getElementById("fileList").innerHTML="";
+    loadPortfolio();
+  }catch(error){
+    console.error(error);
+    msg.textContent="Upload failed: "+(error.message||"Unknown error");
+    toast("Upload failed");
+  }finally{
+    setTimeout(()=>{btn.disabled=false;btn.textContent="SUBMIT PROJECT"},1500);
+  }
+}
+
+/* =========================
+   ADMIN
+========================= */
+async function showAdmin(){
+  const panel=document.getElementById("adminPanel");
+  panel.classList.add("active");
+  panel.scrollIntoView({behavior:"smooth"});
+  await checkUser();
+}
+function hideAdmin(){document.getElementById("adminPanel").classList.remove("active")}
+
+async function checkUser(){
+  const {data,error}=await supabaseClient.auth.getUser();
+  const user=data?.user;
+
+  const status=document.getElementById("adminStatus");
+  const form=document.getElementById("adminFormArea");
+  const login=document.getElementById("loginBox");
+
+  if(error) console.error(error);
+
+  if(!user){
+    status.textContent="Admin login required.";
+    form.classList.add("hidden");
+    login.classList.add("active");
+    return;
+  }
+
+  const userEmail=(user.email || "").toLowerCase();
+
+  if(userEmail !== ADMIN_EMAIL.toLowerCase()){
+    await supabaseClient.auth.signOut();
+    status.textContent="Access denied.";
+    form.classList.add("hidden");
+    login.classList.add("active");
+    document.getElementById("loginMessage").textContent =
+      "This account is not authorized for VIZORA admin access.";
+    return;
+  }
+
+  status.innerHTML =
+    "✓ Admin access granted<br><strong>" +
+    escapeHtml(user.email) + "</strong>";
+
+  form.classList.remove("hidden");
+  login.classList.remove("active");
+
+  await loadAdminProjects(user);
+}
+
+async function adminLogin(){
+  const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+  const password=document.getElementById("loginPassword").value;
+  const message=document.getElementById("loginMessage");
+
+  message.textContent="";
+
+  if(!email || !password){
+    message.textContent="Enter the admin email and password.";
+    return;
+  }
+
+  if(email !== ADMIN_EMAIL.toLowerCase()){
+    message.textContent="Access denied.";
+    return;
+  }
+
+  message.textContent="Signing in...";
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    console.error(error);
+    message.textContent="Invalid admin email or password.";
+    return;
+  }
+
+  const authenticatedEmail=(data?.user?.email || "").toLowerCase();
+
+  if(authenticatedEmail !== ADMIN_EMAIL.toLowerCase()){
+    await supabaseClient.auth.signOut();
+    message.textContent="Access denied.";
+    return;
+  }
+
+  message.textContent="Login successful.";
+  await checkUser();
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+  await checkUser();
+  toast("Logged out");
+}
+
+async function addProject(){
+  const {data:userData}=await supabaseClient.auth.getUser();
+  const user=userData?.user;
+  if(!user){alert("Admin login required.");return}
+
+  if((user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
+    await supabaseClient.auth.signOut();
+    alert("Access denied.");
+    return;
+  }
+
+  const title=document.getElementById("projectTitle").value.trim();
+  const description=document.getElementById("projectDescription").value.trim();
+  const category=document.getElementById("projectCategory").value;
+  let url=document.getElementById("projectUrl").value.trim();
+  let thumbnail_url=document.getElementById("thumbnailUrl").value.trim();
+  const thumbnailFile=document.getElementById("adminThumbnailFile").files[0];
+
+  if(!title){alert("Project title is required.");return}
+
+  try{
+    if(thumbnailFile){
+      if(thumbnailFile.size>MAX_FILE_SIZE){alert("Thumbnail must be 50 MB or smaller.");return}
+      const ext=thumbnailFile.name.includes(".")?thumbnailFile.name.split(".").pop():"jpg";
+      const path=`portfolio/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+      const {error}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,thumbnailFile,{upsert:false,contentType:thumbnailFile.type});
+      if(error)throw error;
+      thumbnail_url=supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl;
+    }
+
+    const {data:maxData}=await supabaseClient.from("portfolio").select("sort_order").order("sort_order",{ascending:false}).limit(1);
+    const nextSort=(maxData?.[0]?.sort_order||0)+1;
+
+    const {error}=await supabaseClient.from("portfolio").insert({
+      title,description,category,url,thumbnail_url,is_visible:true,owner_id:user.id,sort_order:nextSort
+    });
+    if(error)throw error;
+
+    alert("Project added successfully!");
+    ["projectTitle","projectDescription","projectUrl","thumbnailUrl"].forEach(id=>document.getElementById(id).value="");
+    document.getElementById("adminThumbnailFile").value="";
+    document.getElementById("adminMessage").textContent="Project added.";
+    await loadPortfolio(); await loadAdminProjects(user);
+  }catch(error){
+    console.error(error);
+    alert("Could not add project:\n"+error.message);
+  }
+}
+
+async function loadAdminProjects(user){
+  const list=document.getElementById("adminList");
+  list.innerHTML="<div class='help'>Loading your projects...</div>";
+  const {data,error}=await supabaseClient.from("portfolio").select("*").eq("owner_id",user.id).order("sort_order",{ascending:true}).order("created_at",{ascending:false});
+  if(error){list.innerHTML="<div class='help'>Could not load your projects: "+escapeHtml(error.message)+"</div>";return}
+  if(!data?.length){list.innerHTML="<div class='help'>No projects owned by this account yet.</div>";return}
+
+  list.innerHTML=data.map(p=>`
+    <div class="admin-item">
+      <div><strong>${escapeHtml(p.title)}</strong><br><small>${escapeHtml(p.category||"Other")}</small></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+        <span class="badge ${p.is_visible?"":"hidden"}">${p.is_visible?"VISIBLE":"HIDDEN"}</span>
+        <button class="small-btn" onclick="editProject('${escapeHtml(p.id)}')">EDIT</button>
+        <button class="small-btn" onclick="toggleVisibility('${escapeHtml(p.id)}',${!p.is_visible})">${p.is_visible?"HIDE":"SHOW"}</button>
+        <button class="small-btn danger" onclick="deleteProject('${escapeHtml(p.id)}')">DELETE</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function editProject(id){
+  const {data:userData}=await supabaseClient.auth.getUser(); const user=userData?.user;
+  if(!user || (user.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()){await supabaseClient.auth.signOut();alert('Access denied.');return;}
+  const {data,error}=await supabaseClient.from('portfolio').select('*').eq('id',id).eq('owner_id',user.id).single();
+  if(error){alert('Could not load project:\n'+error.message);return;}
+  document.getElementById('editProjectId').value=data.id; document.getElementById('editProjectTitle').value=data.title||'';
+  document.getElementById('editProjectCategory').value=data.category||'Other'; document.getElementById('editProjectDescription').value=data.description||'';
+  document.getElementById('editProjectUrl').value=data.url||''; document.getElementById('editThumbnailUrl').value=data.thumbnail_url||'';
+  document.getElementById('editVisibility').value=String(!!data.is_visible); document.getElementById('editSortOrder').value=data.sort_order??0;
+  document.getElementById('editThumbnailFile').value=''; document.getElementById('editMessage').textContent='';
+  const editor=document.getElementById('projectEditor'); editor.classList.remove('hidden'); editor.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function cancelProjectEdit(){document.getElementById('projectEditor').classList.add('hidden');document.getElementById('editThumbnailFile').value='';document.getElementById('editMessage').textContent='';}
+async function saveProjectChanges(){
+  const {data:userData}=await supabaseClient.auth.getUser(); const user=userData?.user; const message=document.getElementById('editMessage');
+  if(!user || (user.email||'').toLowerCase()!==ADMIN_EMAIL.toLowerCase()){await supabaseClient.auth.signOut();message.textContent='Access denied.';return;}
+  const id=document.getElementById('editProjectId').value, title=document.getElementById('editProjectTitle').value.trim(), category=document.getElementById('editProjectCategory').value;
+  const description=document.getElementById('editProjectDescription').value.trim(); let url=document.getElementById('editProjectUrl').value.trim(); let thumbnail_url=document.getElementById('editThumbnailUrl').value.trim();
+  const is_visible=document.getElementById('editVisibility').value==='true'; const sort_order=parseInt(document.getElementById('editSortOrder').value,10); const thumbnailFile=document.getElementById('editThumbnailFile').files[0];
+  if(!id){message.textContent='No project selected.';return} if(!title){message.textContent='Project title is required.';return} if(url&&safeUrl(url)==='#'){message.textContent='Please enter a valid project link.';return} if(Number.isNaN(sort_order)){message.textContent='Sort order must be a number.';return}
+  message.textContent='Saving changes...';
+  try{
+    if(thumbnailFile){if(thumbnailFile.size>MAX_FILE_SIZE){message.textContent='Thumbnail must be 50 MB or smaller.';return} const ext=thumbnailFile.name.includes('.')?thumbnailFile.name.split('.').pop().toLowerCase():'jpg'; const path=`portfolio/${Date.now()}-${crypto.randomUUID()}.${ext}`; const {error:uploadError}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,thumbnailFile,{upsert:false,contentType:thumbnailFile.type||'image/jpeg'}); if(uploadError)throw uploadError; thumbnail_url=supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl;}
+    const {error}=await supabaseClient.from('portfolio').update({title,category,description,url,thumbnail_url,is_visible,sort_order}).eq('id',id).eq('owner_id',user.id); if(error)throw error;
+    message.textContent='✓ Project updated successfully.'; toast('Project updated'); await loadPortfolio(); await loadAdminProjects(user); setTimeout(cancelProjectEdit,700);
+  }catch(error){console.error(error);message.textContent='Could not save changes: '+(error.message||'Unknown error');}
+}
+
+async function toggleVisibility(id,newValue){
+  const {data:userData}=await supabaseClient.auth.getUser();
+  if(!userData?.user){return}
+  const {error}=await supabaseClient.from("portfolio").update({is_visible:newValue}).eq("id",id).eq("owner_id",userData.user.id);
+  if(error){alert("Could not change visibility:\n"+error.message);return}
+  toast(newValue?"Project is now visible":"Project hidden");
+  await loadPortfolio(); await loadAdminProjects(userData.user);
+}
+
+async function deleteProject(id){
+  if(!confirm("Delete this portfolio project? This cannot be undone."))return;
+  const {data:userData}=await supabaseClient.auth.getUser();
+  if(!userData?.user)return;
+  const {error}=await supabaseClient.from("portfolio").delete().eq("id",id).eq("owner_id",userData.user.id);
+  if(error){alert("Could not delete project:\n"+error.message);return}
+  toast("Project deleted");
+  await loadPortfolio(); await loadAdminProjects(userData.user);
+}
+
+supabaseClient.auth.onAuthStateChange((event)=>{
+  if(event==="SIGNED_IN"||event==="SIGNED_OUT")checkUser();
+});
+
+loadPortfolio();
+</script>
+</body>
+</html>
